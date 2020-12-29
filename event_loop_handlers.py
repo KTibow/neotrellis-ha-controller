@@ -3,7 +3,6 @@ import time
 
 import board
 import busio
-from __main__ import trellis
 
 from const import (
     BLUE,
@@ -12,6 +11,7 @@ from const import (
     RESEND_STATUS_DELAY,
     UART_READ_LENGTH,
     WHITE,
+    trellis,
 )
 from images import draw_image
 from utilities import draw_status, get_payload

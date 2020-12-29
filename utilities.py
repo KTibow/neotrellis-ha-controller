@@ -1,6 +1,4 @@
-from __main__ import trellis
-
-from const import GREEN, RED
+from const import GREEN, RED, trellis
 
 
 def get_payload(data_string):

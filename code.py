@@ -2,14 +2,13 @@
 # Various imports
 import time
 
-import adafruit_trellism4
-
 # Get various constants
-from const import PURPLE, STATUS_REQUEST_FREQUENCY, WHITE
+from const import PURPLE, STATUS_REQUEST_FREQUENCY, WHITE, init
 
-# Set up trellis and UART
-trellis = adafruit_trellism4.TrellisM4Express(rotation=270)
-trellis.pixels.auto_write = False
+# Set up trellis
+init()
+from const import trellis
+
 # Various items
 last_entity_update = time.monotonic()
 

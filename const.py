@@ -2,6 +2,9 @@
 Various constants, including how often to do stuff,
 colors, and other things.
 """
+
+import adafruit_trellism4
+
 # UART
 UART_READ_LENGTH = 35
 # Frequencies (in seconds)
@@ -18,3 +21,8 @@ PURPLE = (64, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BROWN = (35, 22, 0)
+# Inited stuff
+def init():
+    global trellis
+    trellis = adafruit_trellism4.TrellisM4Express(rotation=270)
+    trellis.pixels.auto_write = False

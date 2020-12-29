@@ -1,6 +1,4 @@
-from __main__ import trellis
-
-from const import BIT_BLUE, BLACK, BROWN, WHITE, YELLOW
+from const import BIT_BLUE, BLACK, BROWN, WHITE, YELLOW, trellis
 
 
 def clear_canvas():
