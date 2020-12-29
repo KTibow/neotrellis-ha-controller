@@ -39,9 +39,11 @@ def handle_presses():
     pressed = set(trellis.pressed_keys) - current_press
     if len(pressed) > 0:
         if (0, 0) in pressed:
-            change_entity(True)
+            change_entity(is_previous=True)
+            request_report()
         elif (3, 0) in pressed:
-            change_entity(False)
+            change_entity(is_previous=False)
+            request_report()
         # TODO: Click on status to re-update
         elif (0, 7) in pressed:
             toggle_entity()
