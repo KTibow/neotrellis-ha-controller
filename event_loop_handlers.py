@@ -71,17 +71,17 @@ def get_data(resend_timeout, resend_string):
 def change_entity(is_previous):
     if is_previous:
         print("Requesting previous entity")
-        uart.write(b"prev_entity")
+        uart.write(b"p")
     else:
         print("Requesting next entity")
-        uart.write(b"next_entity")
+        uart.write(b"n")
     uart.reset_input_buffer()
     trellis.pixels[0 if is_previous else 3, 0] = BLUE
     trellis.pixels.show()
     if is_previous:
-        the_payload = get_data(RESEND_CHANGE_DELAY, b"prev_entity")
+        the_payload = get_data(RESEND_CHANGE_DELAY, b"p")
     else:
-        the_payload = get_data(RESEND_CHANGE_DELAY, b"next_entity")
+        the_payload = get_data(RESEND_CHANGE_DELAY, b"n")
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[0 if is_previous else 3, 0] = PURPLE
@@ -90,11 +90,11 @@ def change_entity(is_previous):
 
 def toggle_entity():
     print("Toggling entity")
-    uart.write(b"toggle_entity")
+    uart.write(b"t")
     uart.reset_input_buffer()
     trellis.pixels[0, 7] = BLUE
     trellis.pixels.show()
-    the_payload = get_data(RESEND_CHANGE_DELAY, b"toggle_entity")
+    the_payload = get_data(RESEND_CHANGE_DELAY, b"t")
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[0, 7] = WHITE
@@ -103,11 +103,11 @@ def toggle_entity():
 
 def request_report():
     print("Requesting report")
-    uart.write(b"send_report")
+    uart.write(b"s")
     uart.reset_input_buffer()
     trellis.pixels[1, 0] = BLUE
     trellis.pixels.show()
-    the_payload = get_data(RESEND_STATUS_DELAY, b"send_report")
+    the_payload = get_data(RESEND_STATUS_DELAY, b"s")
     print("Payload:", the_payload)
     current_status = the_payload.split("|")[0]
     if current_status == "on":
