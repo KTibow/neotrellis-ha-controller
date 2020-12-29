@@ -20,6 +20,7 @@ BIT_BLUE = (25, 25, 230)
 PURPLE = (64, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GRAY = (64, 64, 64)
 BROWN = (35, 22, 0)
 # Inited stuff
 def init():

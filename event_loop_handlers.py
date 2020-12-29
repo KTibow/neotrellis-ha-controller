@@ -16,6 +16,8 @@ from const import (
 from images import draw_image
 from utilities import draw_status, get_payload
 
+from choosers import choose_brightness
+
 # Set some stuff up
 uart = busio.UART(board.SDA, board.SCL, baudrate=115200, timeout=0.01)
 current_press = set()
@@ -48,6 +50,11 @@ def handle_presses():
         # TODO: Click on status to re-update
         elif (0, 7) in pressed:
             toggle_entity()
+            request_report()
+            did_request_report = True
+        elif (1, 7) in pressed:
+            choose_brightness()
+            uart.write(b"b66")
             request_report()
             did_request_report = True
     current_press = set(trellis.pressed_keys)

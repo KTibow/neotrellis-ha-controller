@@ -3,7 +3,7 @@
 import time
 
 # Get various constants
-from const import PURPLE, STATUS_REQUEST_FREQUENCY, WHITE, init
+from const import STATUS_REQUEST_FREQUENCY, init
 
 # Set up trellis
 init()
@@ -14,15 +14,9 @@ last_entity_update = time.monotonic()
 
 # Get functions for loop
 from event_loop_handlers import handle_presses, is_pressed, request_report
+from choosers import clear
 
-# Clear pixels and set up toggle button
-trellis.pixels.fill(0)
-# TODO: Make brightness based on sun elevation
-trellis.pixels.brightness = 0.5
-trellis.pixels[0, 0] = PURPLE
-trellis.pixels[3, 0] = PURPLE
-trellis.pixels[0, 7] = WHITE
-trellis.pixels.show()
+clear()
 
 # Event loop
 while True:
