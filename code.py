@@ -14,7 +14,7 @@ trellis.pixels.auto_write = False
 last_entity_update = time.monotonic()
 
 # Get functions for loop
-from event_loop_handlers import handle_presses, request_report, is_pressed
+from event_loop_handlers import handle_presses, is_pressed, request_report
 
 # Clear pixels and set up toggle button
 trellis.pixels.fill(0)

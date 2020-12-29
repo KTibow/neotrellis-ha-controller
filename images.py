@@ -1,6 +1,6 @@
 from __main__ import trellis
 
-from const import BLACK, WHITE, BROWN, YELLOW, BIT_BLUE
+from const import BIT_BLUE, BLACK, BROWN, WHITE, YELLOW
 
 
 def clear_canvas():
@@ -11,6 +11,7 @@ def clear_canvas():
 
 def draw_image(entity_id):
     clear_canvas()
+    # TODO: Add more stuff
     if entity_id == "light.outside_lights":
         draw_outside()
     elif entity_id == "light.living_room_lamps":
@@ -33,6 +34,7 @@ def draw_outside():
     trellis.pixels[2, 4] = YELLOW
     trellis.pixels[3, 4] = YELLOW
     trellis.pixels[2, 5] = YELLOW
+
 
 def draw_living_room():
     trellis.pixels[3, 1] = YELLOW

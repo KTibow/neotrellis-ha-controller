@@ -26,6 +26,7 @@ def is_pressed():
     return len(pressed) > 0
 
 
+# TODO: Store data on the side of the M4 instead
 def handle_presses():
     """
     Look at the currently pressed keys.
