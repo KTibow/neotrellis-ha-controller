@@ -13,8 +13,14 @@ from const import trellis
 last_entity_update = time.monotonic()
 
 # Get functions for loop
-from event_loop_handlers import handle_presses, is_pressed, request_report, render_screen
-from choosers import clear
+from event_loop_handlers import (
+    handle_presses,
+    is_pressed,
+    render_screen,
+    request_report,
+)
+
+from choosers import clear  # isort:skip
 
 clear()
 

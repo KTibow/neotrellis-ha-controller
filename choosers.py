@@ -1,5 +1,5 @@
-from const import PURPLE, WHITE, GRAY, trellis
 import event_loop_handlers
+from const import GRAY, PURPLE, WHITE, trellis
 
 
 def clear():

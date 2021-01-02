@@ -6,18 +6,18 @@ import busio
 
 from const import (
     BLUE,
+    GRAY,
     PURPLE,
     RESEND_CHANGE_DELAY,
     RESEND_STATUS_DELAY,
     UART_READ_LENGTH,
     WHITE,
     trellis,
-    GRAY,
 )
 from images import draw_image
 from utilities import draw_status, get_payload
 
-from choosers import choose_brightness
+from choosers import choose_brightness  # isort:skip
 
 # Set some stuff up
 uart = busio.UART(board.SDA, board.SCL, baudrate=115200, timeout=0.01)
