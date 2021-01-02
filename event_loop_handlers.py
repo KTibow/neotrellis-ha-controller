@@ -59,11 +59,12 @@ def handle_presses():
             render_screen()
             did_request_report = True
         elif (1, 7) in pressed:
-            choose_brightness()
-            uart.write(b"b66")
+            brightness_amount = (choose_brightness() + 1) * 12.5
+            set_brightness(brightness_amount)
             request_report()
             render_screen()
             did_request_report = True
+        # TODO: Color chooser
     current_press = set(trellis.pressed_keys)
     return did_request_report
 
@@ -135,4 +136,17 @@ def render_screen():
     if "|" in the_payload:
         which_entity = the_payload.split("|")[1]
         draw_image(which_entity)
+    trellis.pixels.show()
+
+
+def set_brightness(the_brightness):
+    print("Setting brightness")
+    uart.write(b"b" + str(the_brightness).encode())
+    uart.reset_input_buffer()
+    trellis.pixels[1, 7] = BLUE
+    trellis.pixels.show()
+    the_payload = get_data(RESEND_STATUS_DELAY, b"b" + str(the_brightness).encode())
+    print("Payload:", the_payload)
+    time.sleep(1.5)
+    trellis.pixels[1, 7] = GRAY
     trellis.pixels.show()

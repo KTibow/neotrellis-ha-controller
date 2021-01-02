@@ -14,14 +14,19 @@ def clear():
     trellis.pixels.show()
 
 
+# TODO: Only show brightness button if supported
 def choose_brightness():
     while len(trellis.pressed_keys) != 0:
         pass
     for x_index in range(4):
         for y_index in range(8):
-            brightness = (y_index + 1) * 31
+            brightness = (y_index + 1) * 31.875
             trellis.pixels[x_index, y_index] = (brightness,) * 3
     while len(trellis.pressed_keys) == 0:
         trellis.pixels.show()
     clear()
     event_loop_handlers.render_screen()
+    pixel_num = trellis.pressed_keys[0][1]
+    while len(trellis.pressed_keys) != 0:
+        pass
+    return pixel_num
