@@ -12,6 +12,7 @@ from const import (
     UART_READ_LENGTH,
     WHITE,
     trellis,
+    GRAY,
 )
 from images import draw_image
 from utilities import draw_status, get_payload
@@ -44,18 +45,24 @@ def handle_presses():
         if (0, 0) in pressed:
             change_entity(is_previous=True)
             request_report()
+            render_screen()
+            did_request_report = True
         elif (3, 0) in pressed:
             change_entity(is_previous=False)
             request_report()
+            render_screen()
+            did_request_report = True
         # TODO: Click on status to re-update
         elif (0, 7) in pressed:
             toggle_entity()
             request_report()
+            render_screen()
             did_request_report = True
         elif (1, 7) in pressed:
             choose_brightness()
             uart.write(b"b66")
             request_report()
+            render_screen()
             did_request_report = True
     current_press = set(trellis.pressed_keys)
     return did_request_report
@@ -114,8 +121,12 @@ def request_report():
     uart.reset_input_buffer()
     trellis.pixels[1, 0] = BLUE
     trellis.pixels.show()
+    global the_payload
     the_payload = get_data(RESEND_STATUS_DELAY, b"s")
     print("Payload:", the_payload)
+
+
+def render_screen():
     current_status = the_payload.split("|")[0]
     if current_status == "on":
         draw_status(True)

@@ -13,7 +13,7 @@ from const import trellis
 last_entity_update = time.monotonic()
 
 # Get functions for loop
-from event_loop_handlers import handle_presses, is_pressed, request_report
+from event_loop_handlers import handle_presses, is_pressed, request_report, render_screen
 from choosers import clear
 
 clear()
@@ -30,6 +30,7 @@ while True:
     # TODO: set last_entity_update on all request_reports, not just this one
     if time.monotonic() - last_entity_update > STATUS_REQUEST_FREQUENCY:
         request_report()
+        render_screen()
         did_update_entity = True
     if did_update_entity:
         last_entity_update = time.monotonic()

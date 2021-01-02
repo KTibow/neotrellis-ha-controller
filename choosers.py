@@ -1,4 +1,5 @@
 from const import PURPLE, WHITE, GRAY, trellis
+import event_loop_handlers
 
 
 def clear():
@@ -23,5 +24,4 @@ def choose_brightness():
     while len(trellis.pressed_keys) == 0:
         trellis.pixels.show()
     clear()
-    print(trellis.pressed_keys[0][1])
-    return trellis.pressed_keys[0]
+    event_loop_handlers.render_screen()
