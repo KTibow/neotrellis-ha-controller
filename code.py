@@ -26,7 +26,9 @@ clear()
 
 # Event loop
 while True:
-    time.sleep(0.05)
+    starting_sleep = time.monotonic()
+    while time.monotonic() - starting_sleep < 0.05:
+        pass
     # Loop
     trellis.pixels.brightness = 0.2
     if time.monotonic() - last_entity_update > STATUS_REQUEST_FREQUENCY or is_pressed():
