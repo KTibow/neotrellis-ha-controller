@@ -8,6 +8,7 @@ from const import (
     BLUE,
     GRAY,
     PURPLE,
+    RED,
     RESEND_CHANGE_DELAY,
     RESEND_STATUS_DELAY,
     UART_READ_LENGTH,
@@ -17,7 +18,7 @@ from const import (
 from images import draw_image
 from utilities import draw_status, get_payload
 
-from choosers import choose_brightness  # isort:skip
+from choosers import choose_brightness, choose_color  # isort:skip
 
 # Set some stuff up
 uart = busio.UART(board.SDA, board.SCL, baudrate=115200, timeout=0.01)
@@ -61,6 +62,12 @@ def handle_presses():
         elif (1, 7) in pressed:
             brightness_amount = (choose_brightness() + 1) * 12.5
             set_brightness(brightness_amount)
+            request_report()
+            render_screen()
+            did_request_report = True
+        elif (2, 7) in pressed:
+            hue, sat = choose_color()
+            set_color(hue, sat)
             request_report()
             render_screen()
             did_request_report = True
@@ -149,4 +156,18 @@ def set_brightness(the_brightness):
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[1, 7] = GRAY
+    trellis.pixels.show()
+
+
+def set_color(the_hue, the_sat):
+    print("Setting color")
+    request_payload = b"c" + str(the_hue).encode() + b"," + str(the_sat).encode()
+    uart.write(request_payload)
+    uart.reset_input_buffer()
+    trellis.pixels[2, 7] = BLUE
+    trellis.pixels.show()
+    the_payload = get_data(RESEND_STATUS_DELAY, request_payload)
+    print("Payload:", the_payload)
+    time.sleep(1.5)
+    trellis.pixels[2, 7] = RED
     trellis.pixels.show()
