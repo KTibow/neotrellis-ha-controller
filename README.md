@@ -29,3 +29,21 @@ Run
 ```
 python3 -m black .; python3 -m isort . --profile black; python3 -m pylint code.py utilities.py const.py event_loop_handlers.py images.py --disable=import-error,no-name-in-module
 ```
+
+## Get going
+
+1. Get everything in the dependencies section
+2. Add `on_the_esp_side/comm.h` to the root of your ESPHome folder and modify the entities
+3. Setup your ESP with the file `on_the_esp_side/esp_neotrellis.yaml`
+4. Assemble your Neotrellis case
+5. Plug in the Stemma cable to your Neotrellis
+6. Make these connections:
+
+- Red to 3V on your ESP
+- Black to GND on your ESP
+- Green to 15 on your ESP
+- White to 13 on your ESP
+
+7. Go into your CircuitPython drive
+8. Run `git clone [insert this repo's URL] .`
+9. It should work. If it doesn't, make an issue.
