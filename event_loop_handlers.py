@@ -23,6 +23,7 @@ from choosers import choose_brightness, choose_color  # isort:skip
 # Set some stuff up
 uart = busio.UART(board.SDA, board.SCL, baudrate=115200, timeout=0.01)
 current_press = set()
+the_payload = ""
 
 
 def is_pressed():
@@ -31,6 +32,11 @@ def is_pressed():
 
 
 # TODO: Store data on the side of the M4 instead
+# Implementation:
+# Store payload globally (done already)
+# Store list of all entities
+# Do the math, and emulate the payload
+# Store it and render it
 def handle_presses():
     """
     Look at the currently pressed keys.
@@ -82,7 +88,7 @@ def get_data(resend_timeout, resend_string):
     data_string = uart.read(UART_READ_LENGTH)
     while data_string is None:
         if time.monotonic() - last_request > resend_timeout:
-            print("Re-sending" + resend_string.decode())
+            print("Re-sending", resend_string.decode())
             uart.write(resend_string)
             last_request = time.monotonic()
         data_string = uart.read(UART_READ_LENGTH)

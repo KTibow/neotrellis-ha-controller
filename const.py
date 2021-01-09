@@ -22,6 +22,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (64, 64, 64)
 BROWN = (35, 22, 0)
+# Entities
+ALL_ENTITIES = []
 # Inited stuff
 def init():
     global trellis
