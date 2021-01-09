@@ -1,3 +1,8 @@
+import math
+from time import monotonic
+
+import adafruit_fancyled.adafruit_fancyled as fancy
+
 import event_loop_handlers
 from const import GRAY, PURPLE, RED, WHITE, trellis
 from utilities import scale
@@ -10,10 +15,23 @@ def clear():
     trellis.pixels.brightness = 0.5
     trellis.pixels[0, 0] = PURPLE
     trellis.pixels[3, 0] = PURPLE
-    trellis.pixels[0, 7] = WHITE
+    trellis.pixels[0, 7] = RED
     trellis.pixels[1, 7] = GRAY
     trellis.pixels[2, 7] = RED
     trellis.pixels.show()
+
+
+def animate():
+    tick_size = 1.5
+    tick = monotonic() % tick_size
+    slow_tick_size = 10.0
+    slow_tick = monotonic() % slow_tick_size
+    trellis.pixels[1, 7] = [
+        scale(math.sin(tick / tick_size * 3.14), (-1, 1), (10, 245))
+    ] * 3
+    color = fancy.CHSV(round(slow_tick / slow_tick_size * 255))
+    packed = color.pack()
+    trellis.pixels[2, 7] = packed
 
 
 # TODO: Only show brightness button if supported

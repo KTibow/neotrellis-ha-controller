@@ -20,7 +20,7 @@ from event_loop_handlers import (
     request_report,
 )
 
-from choosers import clear  # isort:skip
+from choosers import animate, clear  # isort:skip
 
 clear()
 
@@ -44,3 +44,4 @@ while True:
         last_entity_update = time.monotonic()
     trellis.pixels.brightness = 0.5
     trellis.pixels.show()
+    animate()
