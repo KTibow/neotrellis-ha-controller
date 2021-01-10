@@ -1,6 +1,6 @@
 # neotrellis-ha
 
-Turn an Adafruit Neotrellis M4 and a spare ESP8266/ESP32 into a smart home hub!
+Turn an Adafruit Neotrellis M4 and a spare ESP8266/ESP32 into a smart home hub controller!
 
 ## Dependencies
 
