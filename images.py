@@ -1,13 +1,16 @@
+"""Draws images for entities."""
 from const import BIT_BLUE, BLACK, BROWN, WHITE, YELLOW, trellis
 
 
 def clear_canvas():
+    """Turns off all LEDs in icon space."""
     for x_index in range(4):
         for y_index in range(1, 7):
             trellis.pixels[x_index, y_index] = BLACK
 
 
 def draw_image(entity_id):
+    """Draws the right icon from an entity."""
     clear_canvas()
     # TODO: Add more stuff
     if entity_id == "light.outside_lights":
@@ -17,6 +20,15 @@ def draw_image(entity_id):
 
 
 def draw_outside():
+    """
+    Draws outside light icon. Layout:
+    %%
+    %%%%%%
+    %%%%%%%%
+    %%%%%%%%
+    %%  %%
+    %
+    """
     trellis.pixels[0, 6] = BROWN
     trellis.pixels[0, 5] = BROWN
     trellis.pixels[0, 4] = BROWN
@@ -35,6 +47,15 @@ def draw_outside():
 
 
 def draw_living_room():
+    """
+    Draws living room icon. Layout:
+          %%
+        %%%%
+    %%    %%
+    %%%%%%%%
+    %%%%%%%%
+
+    """
     trellis.pixels[3, 1] = YELLOW
     trellis.pixels[2, 2] = YELLOW
     trellis.pixels[3, 2] = YELLOW

@@ -1,3 +1,4 @@
+"""Module that contains most stuff used in the main loop."""
 # Various imports
 import time
 
@@ -11,14 +12,13 @@ from const import (
     RED,
     RESEND_CHANGE_DELAY,
     RESEND_STATUS_DELAY,
-    UART_READ_LENGTH,
     WHITE,
     trellis,
 )
 from images import draw_image
-from utilities import draw_status, get_payload
 
 from choosers import choose_brightness, choose_color  # isort:skip
+from utilities import draw_status, get_data  # isort:skip
 
 # Set some stuff up
 uart = busio.UART(board.SDA, board.SCL, baudrate=115200, timeout=0.01)
@@ -27,6 +27,7 @@ the_payload = ""
 
 
 def is_pressed():
+    """Just returns if any new keys were pressed."""
     pressed = set(trellis.pressed_keys) - current_press
     return len(pressed) > 0
 
@@ -77,23 +78,8 @@ def handle_presses():
             request_report()
             render_screen()
             did_request_report = True
-        # TODO: Color chooser
     current_press = set(trellis.pressed_keys)
     return did_request_report
-
-
-# TODO: Move this segment of code into utilities.py
-def get_data(resend_timeout, resend_string):
-    last_request = time.monotonic()
-    data_string = uart.read(UART_READ_LENGTH)
-    while data_string is None:
-        if time.monotonic() - last_request > resend_timeout:
-            print("Re-sending", resend_string.decode())
-            uart.write(resend_string)
-            last_request = time.monotonic()
-        data_string = uart.read(UART_READ_LENGTH)
-    data_string = data_string.decode()
-    return get_payload(data_string)
 
 
 def change_entity(is_previous):
@@ -107,9 +93,9 @@ def change_entity(is_previous):
     trellis.pixels[0 if is_previous else 3, 0] = BLUE
     trellis.pixels.show()
     if is_previous:
-        the_payload = get_data(RESEND_CHANGE_DELAY, b"p")
+        the_payload = get_data(uart, RESEND_CHANGE_DELAY, b"p")
     else:
-        the_payload = get_data(RESEND_CHANGE_DELAY, b"n")
+        the_payload = get_data(uart, RESEND_CHANGE_DELAY, b"n")
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[0 if is_previous else 3, 0] = PURPLE
@@ -117,12 +103,13 @@ def change_entity(is_previous):
 
 
 def toggle_entity():
+    """Asks ESP to toggle current entity."""
     print("Toggling entity")
     uart.write(b"t")
     uart.reset_input_buffer()
     trellis.pixels[0, 7] = BLUE
     trellis.pixels.show()
-    the_payload = get_data(RESEND_CHANGE_DELAY, b"t")
+    the_payload = get_data(uart, RESEND_CHANGE_DELAY, b"t")
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[0, 7] = WHITE
@@ -130,17 +117,25 @@ def toggle_entity():
 
 
 def request_report():
+    """Asks ESP which entity and its state."""
     print("Requesting report")
     uart.write(b"s")
     uart.reset_input_buffer()
     trellis.pixels[1, 0] = BLUE
     trellis.pixels.show()
     global the_payload
-    the_payload = get_data(RESEND_STATUS_DELAY, b"s")
+    the_payload = get_data(uart, RESEND_STATUS_DELAY, b"s")
     print("Payload:", the_payload)
 
 
 def render_screen():
+    """
+    Renders screen.
+    It does this by looking at the last payload sent.
+    Then if it's on, it shows that it's on, and vice versa.
+    It also renders the entity's icon.
+    Then it runs trellis.pixels.show.
+    """
     current_status = the_payload.split("|")[0]
     if current_status == "on":
         draw_status(True)
@@ -153,12 +148,19 @@ def render_screen():
 
 
 def set_brightness(the_brightness):
+    """
+    Asks ESP to set brightness.
+    Args:
+        the_brightness: Brightness to set, 0-100
+    """
     print("Setting brightness")
     uart.write(b"b" + str(the_brightness).encode())
     uart.reset_input_buffer()
     trellis.pixels[1, 7] = BLUE
     trellis.pixels.show()
-    the_payload = get_data(RESEND_STATUS_DELAY, b"b" + str(the_brightness).encode())
+    the_payload = get_data(
+        uart, RESEND_STATUS_DELAY, b"b" + str(the_brightness).encode()
+    )
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[1, 7] = GRAY
@@ -166,13 +168,19 @@ def set_brightness(the_brightness):
 
 
 def set_color(the_hue, the_sat):
+    """
+    Asks ESP to set color.
+    Args:
+        the_hue: Hue to be passed, 0-360
+        the_sat: Saturation to be passed, 0-100
+    """
     print("Setting color")
     request_payload = b"c" + str(the_hue).encode() + b"," + str(the_sat).encode()
     uart.write(request_payload)
     uart.reset_input_buffer()
     trellis.pixels[2, 7] = BLUE
     trellis.pixels.show()
-    the_payload = get_data(RESEND_STATUS_DELAY, request_payload)
+    the_payload = get_data(uart, RESEND_STATUS_DELAY, request_payload)
     print("Payload:", the_payload)
     time.sleep(1.5)
     trellis.pixels[2, 7] = RED

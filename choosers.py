@@ -1,3 +1,5 @@
+"""Functions to render multiple LEDs and choose items (like color)."""
+
 import math
 from time import monotonic
 

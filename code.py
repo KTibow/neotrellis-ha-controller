@@ -1,4 +1,4 @@
-"""Interactive Home Assistant hub"""
+"""Interactive Home Assistant controller"""
 # Various imports
 import time
 
